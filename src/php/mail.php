@@ -11,6 +11,7 @@
     $messageMail = "$message.\r\n\r\n\r\nПочта отправителя: $email\r\n\r\nНомер телефона отправителя: $phone";
 
     $success = mail($mail_to, $subject, $messageMail);
-
+    header("Access-Control-Allow-Origin: *");
+    echo json_encode($success, JSON_PRETTY_PRINT);
     echo ($success);
 ?>
