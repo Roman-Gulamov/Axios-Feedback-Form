@@ -1,4 +1,10 @@
-export interface IForm {
+import { ChangeEvent, FormEvent, RefObject } from "react";
+
+export interface IContext {
+    handleChange: (event: ChangeEvent<HTMLInputElement>) => void
+}
+
+export interface IMap {
     type?: string,
     id?: string,
     name: string,
@@ -10,15 +16,15 @@ export interface IForm {
     className?: string
 }
 
-export interface IProps extends INotice{
-    loadingVisible: string
-    handleSubmit: any
-    handleChange: any
+export interface IFeedback extends INotice{
+    loadingVisible: string,
+    formRef: RefObject<HTMLFormElement>,
+    handleSubmit: (event: FormEvent<HTMLFormElement>) => boolean | undefined
     isDisabled: boolean
 }
 
 export interface INotice {
-    text: string,
+    text?: string,
     className?: string
 }
 
