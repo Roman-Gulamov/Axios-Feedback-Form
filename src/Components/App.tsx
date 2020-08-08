@@ -1,20 +1,23 @@
 /* eslint-disable no-useless-escape */
-import React, { useState } from 'react';
+import React, { useState, createRef, ChangeEvent, FormEvent, useEffect } from 'react';
 import Axios, { AxiosRequestConfig, AxiosResponse, AxiosInstance } from "axios";
-import { INotice, Iinput } from './Interface/Interface';
+import { Context } from './context/context';
+import { INotice, Iinput } from './interface/Interface';
 import { Feedback } from './Feedback';
 
 
-const App = ():JSX.Element => {
+const App = (): JSX.Element => {
     const axios: AxiosInstance = Axios.create();
+    const formRef = createRef<HTMLFormElement>();
     const regExp: RegExp = /^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/;
 
     const [isDisabled, setDisabled] = useState(false);
     const [loadingVisible, setVisible] = useState('d-none');
+    const [success, setSuccess] = useState(false);
 
     const [notice, setNotice] = useState<INotice>({ 
         text: "",
-        className: ""
+        className: "bg-danger"
     });
 
     const [inputValue, setValue] = useState<Iinput>({ 
@@ -24,8 +27,7 @@ const App = ():JSX.Element => {
         message: ""
     });
 
-
-const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
     const target = event.target;
     const name = target.name;
     setValue({
@@ -34,37 +36,44 @@ const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     });
 };
 
-const clearAfter = (): void => {
-    setVisible('d-none');
-    setDisabled(false);
-};  
+useEffect(() => {
+    if (success) {
+        const form = formRef.current;
+        (form as HTMLFormElement).reset();
+    }
+});
 
-const handleSubmit = (event: React.FormEvent<HTMLFormElement>): boolean | undefined => {
+const handleSubmit = (event: FormEvent<HTMLFormElement>): boolean | undefined => {
     event.preventDefault();
     
     if (inputValue.email === "") {
         setNotice({
-            text: 'Пожалуйста, укажите email!'
+            ...notice,
+            text: 'Пожалуйста, укажите вашу почту!'
         });
         return false;
     } else if (inputValue.name === "") {
         setNotice({
+            ...notice,
             text: 'Пожалуйста, введите своё имя!'
         });
         return false;
     } else if (inputValue.phone === "" || !regExp.test(inputValue.phone as string)) {
         setNotice({
+            ...notice,
             text: 'Пожалуйста, введите номер телефона!'
         });
         return false;
     } else if ((inputValue.message as string).length <= 3) {
         setNotice({
+            ...notice,
             text: 'Пожалуйста, введите сообщение более 3 символов!'
         });
         return false;
     }
 
     setNotice({
+        ...notice,
         text: ''
     });
 
@@ -75,7 +84,12 @@ const handleSubmit = (event: React.FormEvent<HTMLFormElement>): boolean | undefi
         return config; 
     });
 //! ------------------------------------------  Before send   --------------------------------------------------------------------//
-    
+
+const clearAfter = (): void => {
+    setVisible('d-none');
+    setDisabled(false);
+    setSuccess(false);
+}; 
     
 //! ------------------------------------------  Submission result   -------------------------------------------------------------//
     axios.interceptors.response.use((response: AxiosResponse<object>): any | never => {
@@ -85,53 +99,62 @@ const handleSubmit = (event: React.FormEvent<HTMLFormElement>): boolean | undefi
                 className: 'bg-success'
             });
             setDisabled(true);
-            setTimeout(() => {
-                setNotice({
-                    text: '',
-                    className: 'bg-danger'
-                });
-            }, 1100)
+            setSuccess(true);
             setValue({
                 email: "",
                 name: "",
                 phone: "",
                 message: ""
             });
-            (event.target as HTMLFormElement).reset();
+            setTimeout(() => {
+                setNotice({
+                    text: '',
+                    className: "bg-danger"
+                });
+            }, 1300);
         } 
-            clearAfter();
+        clearAfter();
     }, 
     (error: string) => {
+        clearAfter();
         setNotice({
+            ...notice,
             text: 'Сообщение не отправлено. Проверьте соединение с сервером.'
         });
-            clearAfter();
+        setTimeout(() => {
+            setNotice({
+                text: '',
+                className: "bg-danger"
+            });
+        }, 1200);
         return Promise.reject(error);
     });
 //! ------------------------------------------  Submission result   -------------------------------------------------------------//
 
 
 //! ----------------------------------------------  Send  -----------------------------------------------------------------------//
-    axios.post("/mail.php", { 
+    axios.post("../mail.php", { 
         'email': inputValue.email,
         'name': inputValue.name,                                               
         'phone': inputValue.phone,
         'message': inputValue.message
-    })
+    });
 }
 //! ----------------------------------------------  Send  -----------------------------------------------------------------------//
 
     return (
-        <div>
-            <Feedback
-                loadingVisible={loadingVisible} 
-                className={notice.className} 
-                text={notice.text} 
-                handleSubmit={handleSubmit} 
-                handleChange={handleChange} 
-                isDisabled={isDisabled}
-            />
-        </div>
+        <Context.Provider value={{ handleChange }}>
+            <div>
+                <Feedback
+                    formRef={formRef}
+                    loadingVisible={loadingVisible} 
+                    className={notice.className} 
+                    text={notice.text} 
+                    handleSubmit={handleSubmit}
+                    isDisabled={isDisabled}
+                />
+            </div>
+        </Context.Provider>
     );
 }
 
