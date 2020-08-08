@@ -1,11 +1,11 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
 import { FeedbackMap } from './FeedbackMap';
-import { IProps } from './Interface/Interface';
+import { IFeedback } from './interface/Interface';
 import Loading from '../assets/Loading.gif';
 
 
-export const Feedback = ({ loadingVisible, className, text, handleSubmit, handleChange, isDisabled }: IProps): JSX.Element => {
+export const Feedback = ({ loadingVisible, className, text, formRef, handleSubmit, isDisabled }: IFeedback): JSX.Element => {
     return (
         <>
         <div className="wrapper">
@@ -15,17 +15,13 @@ export const Feedback = ({ loadingVisible, className, text, handleSubmit, handle
                 src={Loading} 
                 alt="loading..." 
             />
-            <div 
-                id="notice" 
-                className={`bg-danger text-center text-light ${className}`}>
-                {text}
-            </div>
-            <Form 
+            <div className={`${className} text-center text-light`}>{text}</div>
+            <Form
+                ref={formRef}
                 className="form d-flex flex-column" 
-                action="" 
                 onSubmit={handleSubmit}
             >
-                <FeedbackMap handleChange={handleChange} />
+                <FeedbackMap />
                 <button 
                     name="button"
                     className="form__button btn shadow-none"

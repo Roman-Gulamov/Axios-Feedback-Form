@@ -1,6 +1,6 @@
-import { IForm } from '../Interface/Interface';
+import { IMap } from '../interface/Interface';
 
-const FEEDBACK_DATA: Array<IForm> = [
+const FEEDBACK_DATA: Array<IMap> = [
     {
         type: 'email',
         name: "email",
