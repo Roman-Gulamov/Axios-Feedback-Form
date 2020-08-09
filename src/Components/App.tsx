@@ -6,7 +6,7 @@ import { INotice, Iinput } from './Interface/Interface';
 import { Feedback } from './Feedback';
 
 
-const App = (): JSX.Element => {
+export const App = (): JSX.Element => {
     const axios: AxiosInstance = Axios.create();
     const formRef = createRef<HTMLFormElement>();
     const regExp: RegExp = /^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/;
@@ -157,5 +157,3 @@ const clearAfter = (): void => {
         </Context.Provider>
     );
 }
-
-export default App;
