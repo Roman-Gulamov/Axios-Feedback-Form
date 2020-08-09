@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
 import { FeedbackMap } from './FeedbackMap';
-import { IFeedback } from './interface/Interface';
+import { IFeedback } from './Interface/Interface';
 import Loading from '../assets/Loading.gif';
 
 

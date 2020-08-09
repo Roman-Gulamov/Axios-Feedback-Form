@@ -2,7 +2,7 @@ import React from 'react';
 import FEEDBACK_DATA from './Data/FeedbackData';
 import { Context } from './context/context';
 import { Form } from 'react-bootstrap';
-import { IMap } from './interface/Interface';
+import { IMap } from './Interface/Interface';
 
 export const FeedbackMap = () => {
     return (

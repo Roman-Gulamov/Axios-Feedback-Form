@@ -1,4 +1,4 @@
-import { IMap } from '../interface/Interface';
+import { IMap } from '../Interface/Interface';
 
 const FEEDBACK_DATA: Array<IMap> = [
     {

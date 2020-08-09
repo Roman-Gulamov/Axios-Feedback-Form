@@ -2,7 +2,7 @@
 import React, { useState, createRef, ChangeEvent, FormEvent, useEffect } from 'react';
 import Axios, { AxiosRequestConfig, AxiosResponse, AxiosInstance } from "axios";
 import { Context } from './context/context';
-import { INotice, Iinput } from './interface/Interface';
+import { INotice, Iinput } from './Interface/Interface';
 import { Feedback } from './Feedback';
 
 
