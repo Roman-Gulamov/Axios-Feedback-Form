@@ -144,7 +144,7 @@ const clearAfter = (): void => {
 
     return (
         <Context.Provider value={{ handleChange }}>
-            <div>
+            <>
                 <Feedback
                     formRef={formRef}
                     loadingVisible={loadingVisible} 
@@ -153,7 +153,7 @@ const clearAfter = (): void => {
                     handleSubmit={handleSubmit}
                     isDisabled={isDisabled}
                 />
-            </div>
+            </>
         </Context.Provider>
     );
 }
