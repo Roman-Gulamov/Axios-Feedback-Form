@@ -1,6 +1,6 @@
-import React, { ChangeEvent } from 'react';
+import { ChangeEvent, createContext } from 'react';
 import { IContext } from '../Interface/Interface';
 
-export const Context = React.createContext<IContext>({
+export const Context = createContext<IContext>({
     handleChange: (event: ChangeEvent<HTMLInputElement>) => {}
 });
