@@ -1,6 +1,11 @@
 {
     "name": "axiosform",
     "version": "0.1.0",
+    "author": "Roman Gulamov",
+    "repository": {
+        "type": "git",
+        "url": "git+//https://github.com/Roman-Gulamov/axiosform"
+    },
     "private": true,
     "dependencies": {
         "@types/jest": "^24.0.0",
