@@ -27,108 +27,108 @@ export const App = (): JSX.Element => {
         message: ""
     });
 
-const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    const target = event.target;
-    const name = target.name;
-    setValue({
-        ...inputValue,
-        [name]: target.value
-    });
-};
+    const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
+        const target = event.target;
+        const name = target.name;
+        setValue({
+            ...inputValue,
+            [name]: target.value
+        });
+    };
 
-useEffect(() => {
-    if (success) {
-        const form = formRef.current;
-        (form as HTMLFormElement).reset();
-    }
-});
-
-const handleSubmit = (event: FormEvent<HTMLFormElement>): boolean | undefined => {
-    event.preventDefault();
-    
-    if (inputValue.email === "") {
-        setNotice({
-            ...notice,
-            text: 'Пожалуйста, укажите вашу почту!'
-        });
-        return false;
-    } else if (inputValue.name === "") {
-        setNotice({
-            ...notice,
-            text: 'Пожалуйста, введите своё имя!'
-        });
-        return false;
-    } else if (inputValue.phone === "" || !regExp.test(inputValue.phone as string)) {
-        setNotice({
-            ...notice,
-            text: 'Пожалуйста, введите номер телефона!'
-        });
-        return false;
-    } else if ((inputValue.message as string).length <= 3) {
-        setNotice({
-            ...notice,
-            text: 'Пожалуйста, введите сообщение более 3 символов!'
-        });
-        return false;
-    }
-
-    setNotice({
-        ...notice,
-        text: ''
+    useEffect(() => {
+        if (success) {
+            const form = formRef.current;
+            (form as HTMLFormElement).reset();
+        }
     });
 
-//! ------------------------------------------  Before send   --------------------------------------------------------------------//
-    axios.interceptors.request.use((config: AxiosRequestConfig): AxiosRequestConfig => {
-        setVisible('');
-        setDisabled(true);
-        return config; 
-    });
-//! ------------------------------------------  Before send   --------------------------------------------------------------------//
-
-const clearAfter = (): void => {
-    setVisible('d-none');
-    setDisabled(false);
-    setSuccess(false);
-}; 
-    
-//! ------------------------------------------  Submission result   -------------------------------------------------------------//
-    axios.interceptors.response.use((response: AxiosResponse<object>): any | never => {
-        if (response.data) {
+    const handleSubmit = (event: FormEvent<HTMLFormElement>): boolean | undefined => {
+        event.preventDefault();
+        
+        if (inputValue.email === "") {
             setNotice({
-                text: 'Сообщение отправлено!',
-                className: 'bg-success'
+                ...notice,
+                text: 'Пожалуйста, укажите вашу почту!'
             });
+            return false;
+        } else if (inputValue.name === "") {
+            setNotice({
+                ...notice,
+                text: 'Пожалуйста, введите своё имя!'
+            });
+            return false;
+        } else if (inputValue.phone === "" || !regExp.test(inputValue.phone as string)) {
+            setNotice({
+                ...notice,
+                text: 'Пожалуйста, введите номер телефона!'
+            });
+            return false;
+        } else if ((inputValue.message as string).length <= 3) {
+            setNotice({
+                ...notice,
+                text: 'Пожалуйста, введите сообщение более 3 символов!'
+            });
+            return false;
+        }
+
+        setNotice({
+            ...notice,
+            text: ''
+        });
+
+    //! ------------------------------------------  Before send   --------------------------------------------------------------------//
+        axios.interceptors.request.use((config: AxiosRequestConfig): AxiosRequestConfig => {
+            setVisible('');
             setDisabled(true);
-            setSuccess(true);
-            setValue({
-                email: "",
-                name: "",
-                phone: "",
-                message: ""
+            return config; 
+        });
+    //! ------------------------------------------  Before send   --------------------------------------------------------------------//
+
+    const clearAfter = (): void => {
+        setVisible('d-none');
+        setDisabled(false);
+        setSuccess(false);
+    }; 
+        
+    //! ------------------------------------------  Submission result   -------------------------------------------------------------//
+        axios.interceptors.response.use((response: AxiosResponse<object>): any | never => {
+            if (response.data) {
+                setNotice({
+                    text: 'Сообщение отправлено!',
+                    className: 'bg-success'
+                });
+                setDisabled(true);
+                setSuccess(true);
+                setValue({
+                    email: "",
+                    name: "",
+                    phone: "",
+                    message: ""
+                });
+                setTimeout(() => {
+                    setNotice({
+                        text: '',
+                        className: "bg-danger"
+                    });
+                }, 1300);
+            } 
+            clearAfter();
+        }, 
+        (error: string) => {
+            clearAfter();
+            setNotice({
+                ...notice,
+                text: 'Сообщение не отправлено. Проверьте соединение с сервером.'
             });
             setTimeout(() => {
                 setNotice({
                     text: '',
                     className: "bg-danger"
                 });
-            }, 1300);
-        } 
-        clearAfter();
-    }, 
-    (error: string) => {
-        clearAfter();
-        setNotice({
-            ...notice,
-            text: 'Сообщение не отправлено. Проверьте соединение с сервером.'
+            }, 1200);
+            return Promise.reject(error);
         });
-        setTimeout(() => {
-            setNotice({
-                text: '',
-                className: "bg-danger"
-            });
-        }, 1200);
-        return Promise.reject(error);
-    });
 //! ------------------------------------------  Submission result   -------------------------------------------------------------//
 
 
