@@ -5,10 +5,10 @@ export interface IContext {
 }
 
 export interface IMap {
+    name: string,
+    placeholder: string,
     type?: string,
     id?: string,
-    name: string,
-    placeholder?: string,
     pattern?: string,
     as?: any,
     cols?: number,
