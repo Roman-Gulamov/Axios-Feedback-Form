@@ -22,6 +22,7 @@ const FEEDBACK_DATA: Array<IMap> = [
         name: "message",
         cols: 30,
         rows: 4,
+        placeholder: "Введите сообщение...",
         className: "form__message"
     }
 ]
