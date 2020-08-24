@@ -1,15 +1,12 @@
 ## Инструкция для старта проекта:
 
-1. ***Склонировать*** данный репозиторий с любого удобного для вас терминала:
-    > `git clone https://github.com/Roman-Gulamov/axiosform`
->                     
-2. Открыть `командную строку`, указав в качестве дериктории `axiosform` и ввести в ней команду `yarn install`
-    > Данная команда установит зависимости, указанные в файле  `package.json`.
+1. `git clone https://github.com/Roman-Gulamov/axiosform`
 
-3. Ввести в командной строке `yarn build`
-    > Данная команда соберёт проект в папку build.
+2. `yarn install`
 
-4. В браузере перейти по адресу `http://localhost/axiosform/build/` (или укажите свой в файле package.json, заменив `homepage`)
+3. `yarn build`
+
+4. `http://localhost/axiosform/build/`
 
 ## В проекте используется и применяется:
 1. `React`
