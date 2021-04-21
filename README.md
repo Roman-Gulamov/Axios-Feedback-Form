@@ -1,9 +1,17 @@
-## Инструкция для старта проекта:
+# Instructions for starting a project:
 
-1. `git clone https://github.com/Roman-Gulamov/axiosform`
+``` bash
+    1.  git clone https://github.com/Roman-Gulamov/axiosform
+```
 
-2. `yarn install`
+``` bash
+    2.  yarn install
+```
 
-3. `yarn build`
+``` bash
+    3.  yarn build
+```
 
-4. `http://localhost/axiosform/build/`
+``` bash
+    4.  http://localhost/axiosform/build/
+```
